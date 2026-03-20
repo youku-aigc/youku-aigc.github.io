@@ -83,27 +83,35 @@
             <h3 class="results-subtitle">Videos</h3>
             <div class="results-carousel" data-carousel>
               <button class="carousel-control carousel-control--prev" type="button" aria-label="Previous video" data-carousel-prev>
-                &larr;
+                <span aria-hidden="true">&#10094;</span>
               </button>
               <div class="carousel-stage">
-                <video class="carousel-video is-active" controls playsinline preload="metadata" data-carousel-video>
-                  <source src="assets/movies/1.mp4" type="video/mp4" />
-                </video>
-                <video class="carousel-video" controls playsinline preload="metadata" data-carousel-video>
-                  <source src="assets/movies/2.mp4" type="video/mp4" />
-                </video>
-                <video class="carousel-video" controls playsinline preload="metadata" data-carousel-video>
-                  <source src="assets/movies/3.mp4" type="video/mp4" />
-                </video>
-                <video class="carousel-video" controls playsinline preload="metadata" data-carousel-video>
-                  <source src="assets/movies/4.mp4" type="video/mp4" />
-                </video>
-                <video class="carousel-video" controls playsinline preload="metadata" data-carousel-video>
-                  <source src="assets/movies/5.mp4" type="video/mp4" />
-                </video>
+                <div class="carousel-track" data-carousel-track>
+                  <video class="carousel-video" playsinline preload="metadata" data-carousel-clone="last">
+                    <source src="assets/movies/5.mp4" type="video/mp4" />
+                  </video>
+                  <video class="carousel-video is-active" controls playsinline preload="metadata" data-carousel-video>
+                    <source src="assets/movies/1.mp4" type="video/mp4" />
+                  </video>
+                  <video class="carousel-video" controls playsinline preload="metadata" data-carousel-video>
+                    <source src="assets/movies/2.mp4" type="video/mp4" />
+                  </video>
+                  <video class="carousel-video" controls playsinline preload="metadata" data-carousel-video>
+                    <source src="assets/movies/3.mp4" type="video/mp4" />
+                  </video>
+                  <video class="carousel-video" controls playsinline preload="metadata" data-carousel-video>
+                    <source src="assets/movies/4.mp4" type="video/mp4" />
+                  </video>
+                  <video class="carousel-video" controls playsinline preload="metadata" data-carousel-video>
+                    <source src="assets/movies/5.mp4" type="video/mp4" />
+                  </video>
+                  <video class="carousel-video" playsinline preload="metadata" data-carousel-clone="first">
+                    <source src="assets/movies/1.mp4" type="video/mp4" />
+                  </video>
+                </div>
               </div>
               <button class="carousel-control carousel-control--next" type="button" aria-label="Next video" data-carousel-next>
-                &rarr;
+                <span aria-hidden="true">&#10095;</span>
               </button>
             </div>
             <div class="carousel-dots" data-carousel-dots>
@@ -151,8 +159,11 @@
         const prevButton = carousel.querySelector('[data-carousel-prev]');
         const nextButton = carousel.querySelector('[data-carousel-next]');
         const stage = carousel.querySelector('.carousel-stage');
+        const track = carousel.querySelector('[data-carousel-track]');
         const dots = Array.from(document.querySelectorAll('[data-carousel-dot]'));
         let currentIndex = 0;
+        let trackIndex = 1;
+        let isAnimating = false;
 
         const updateStageRatio = () => {
           const activeVideo = videos[currentIndex];
@@ -172,6 +183,10 @@
             }
           });
 
+          if (track) {
+            track.style.transform = `translateX(-${trackIndex * 100}%)`;
+          }
+
           dots.forEach((dot, index) => {
             dot.classList.toggle('is-active', index === currentIndex);
           });
@@ -179,25 +194,57 @@
           updateStageRatio();
         };
 
-        prevButton?.addEventListener('click', () => {
-          currentIndex = (currentIndex - 1 + videos.length) % videos.length;
+        const jumpToRealSlide = () => {
+          if (!track) return;
+          track.classList.add('is-instant');
+          trackIndex = currentIndex + 1;
+          track.style.transform = `translateX(-${trackIndex * 100}%)`;
+          track.getBoundingClientRect();
+          track.classList.remove('is-instant');
+        };
+
+        const goToIndex = (nextIndex, direction) => {
+          if (isAnimating || !track) return;
+          isAnimating = true;
+
+          if (direction === 'next' && currentIndex === videos.length - 1) {
+            currentIndex = 0;
+            trackIndex = videos.length + 1;
+          } else if (direction === 'prev' && currentIndex === 0) {
+            currentIndex = videos.length - 1;
+            trackIndex = 0;
+          } else {
+            currentIndex = nextIndex;
+            trackIndex = currentIndex + 1;
+          }
+
           render();
+        };
+
+        prevButton?.addEventListener('click', () => {
+          goToIndex((currentIndex - 1 + videos.length) % videos.length, 'prev');
         });
 
         nextButton?.addEventListener('click', () => {
-          currentIndex = (currentIndex + 1) % videos.length;
-          render();
+          goToIndex((currentIndex + 1) % videos.length, 'next');
         });
 
         dots.forEach((dot, index) => {
           dot.addEventListener('click', () => {
-            currentIndex = index;
-            render();
+            if (isAnimating || index === currentIndex) return;
+            goToIndex(index, index > currentIndex ? 'next' : 'prev');
           });
         });
 
         videos.forEach((video) => {
           video.addEventListener('loadedmetadata', updateStageRatio);
+        });
+
+        track?.addEventListener('transitionend', () => {
+          if ((currentIndex === 0 && trackIndex === videos.length + 1) || (currentIndex === videos.length - 1 && trackIndex === 0)) {
+            jumpToRealSlide();
+          }
+          isAnimating = false;
         });
 
         render();
