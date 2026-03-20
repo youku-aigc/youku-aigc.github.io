@@ -160,6 +160,13 @@ h1 {
   font-size: 0.95rem;
 }
 
+.venue {
+  margin-bottom: 18px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #c81e1e;
+}
+
 .hero__links {
   display: flex;
   flex-wrap: wrap;
