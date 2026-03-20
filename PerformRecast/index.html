@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PerformRecast: Expression and Head Pose Disentanglement for Portrait Video Editing</title>
+    <meta
+      name="description"
+      content="Project page for PerformRecast: Expression and Head Pose Disentanglement for Portrait Video Editing."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="container hero__inner">
+        <div class="hero__menu">
+          <button class="hero__kicker hero__kicker--menu" type="button">More Research</button>
+          <div class="research-dropdown" aria-label="More research links"></div>
+        </div>
+        <h1>PerformRecast: Expression and Head Pose Disentanglement for Portrait Video Editing</h1>
+        <div class="authors">
+          <a href="https://github.com/dongdongdong666" target="_blank" rel="noreferrer">Jiadong Liang*</a>
+          <a href="https://ymxbj.github.io" target="_blank" rel="noreferrer">Bojun Xiong*</a>
+          <a href="https://github.com/takiee" target="_blank" rel="noreferrer">Jie Tian</a>
+          <a href="https://github.com/grovessss" target="_blank" rel="noreferrer">Hua Li</a>
+          <a href="https://github.com/LongXiao2001" target="_blank" rel="noreferrer">Xiao Long</a>
+          <a href="https://openreview.net/profile?id=~Yong_Zheng3" target="_blank" rel="noreferrer">Yong Zheng</a>
+          <a href="https://huan-fu.github.io" target="_blank" rel="noreferrer">Huan Fu<sup>&dagger;</sup></a>
+        </div>
+        <p class="affiliation">HUJING Digital Media &amp; Entertainment Group</p>
+        <p class="meta">* Equal contribution &nbsp;&nbsp; &dagger; Corresponding author</p>
+        <div class="hero__links">
+          <a class="button button--paper" href="./PerformRecast.pdf" target="_blank" rel="noreferrer">Paper PDF</a>
+          <span class="button button--disabled" aria-disabled="true">arXiv</span>
+          <span class="button button--disabled" aria-disabled="true">Code (Coming Soon)</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section section--teaser" id="teaser">
+        <div class="container">
+          <figure class="teaser">
+            <img src="assets/teaser.png" alt="Teaser figure from the PerformRecast paper showing expression editing, cross-reenactment, and portrait animation results." />
+            <figcaption>
+              Our proposed PerformRecast is capable of editing the facial expression of a source portrait video as well as animating a static portrait image according to a driving video. The top part of this figure shows the expression editing results of a movie clip and a 3D animation. The generated results exhibit high fidelity to the driving video, facilitating the production processes in film and animation industries. For the shot with multiple characters, we can select the specific person whose facial expression we want to edit, which is indicated by a red dashed box. The bottom-right insets on the top part show the driving frames.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" id="abstract">
+        <div class="container narrow">
+          <h2>Abstract</h2>
+          <p>
+            This paper primarily investigates the task of expression-only portrait video performance editing based on a driving video, which plays a crucial role in animation and film industries. Most existing research mainly focuses on portrait animation, which aims to animate a static portrait image according to the facial motion from the driving video. As a consequence, it remains challenging for them to disentangle the facial expression from head pose rotation and thus lack the ability to edit facial expression independently. In this paper, we propose PerformRecast, a versatile expression-only video editing method which is dedicated to recast the performance in existing film and animation. The key insight of our method comes from the characteristics of 3D Morphable Face Model (3DMM), which models the face identity, facial expression and head pose of 3D face mesh with separate parameters. Therefore, we improve the keypoints transformation formula in previous methods to make it more consistent with 3DMM model, which achieves a better disentanglement and provides users with much more fine-grained control. Furthermore, to avoid the misalignment around the boundary of face in generated results, we decouple the facial and non-facial regions of input portrait images and pre-train a teacher model to provide separate supervision for them. Extensive experiments show that our method produces high-quality results which are more faithful to the driving video, outperforming existing methods in both controllability and efficiency.
+          </p>
+        </div>
+      </section>
+
+      <section class="section" id="highlights">
+        <div class="container">
+          <h2>Method</h2>
+          <figure class="method-figure">
+            <img src="assets/method.png" alt="Overview of the PerformRecast framework." />
+            <figcaption>
+              An overview of our PerformRecast framework. The motion extractor extracts canonical keypoints, head pose, expression deformation, scale factor and translation from source and driving frames. The facial keypoints are obtained via our improved keypoints transformation formula and compared with the tracking results from Pixel3DMM to calculate the FLAME loss. Finally, the appearance feature volume, source and driving keypoints are sent to the warping module, followed by the decoder to reconstruct the driving frame.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" id="results">
+        <div class="container">
+          <div class="results-group">
+            <h2>Expression-only Video Performance Editing</h2>
+            <h3 class="results-subtitle">Visual Comparisons</h3>
+            <figure class="result-figure">
+              <img src="assets/expression.png" alt="Visual comparisons for expression-only video performance editing." />
+            </figure>
+
+            <h3 class="results-subtitle">Videos</h3>
+            <div class="results-carousel" data-carousel>
+              <button class="carousel-control carousel-control--prev" type="button" aria-label="Previous video" data-carousel-prev>
+                &larr;
+              </button>
+              <div class="carousel-stage">
+                <video class="carousel-video is-active" controls playsinline preload="metadata" data-carousel-video>
+                  <source src="assets/movies/1.mp4" type="video/mp4" />
+                </video>
+                <video class="carousel-video" controls playsinline preload="metadata" data-carousel-video>
+                  <source src="assets/movies/2.mp4" type="video/mp4" />
+                </video>
+                <video class="carousel-video" controls playsinline preload="metadata" data-carousel-video>
+                  <source src="assets/movies/3.mp4" type="video/mp4" />
+                </video>
+                <video class="carousel-video" controls playsinline preload="metadata" data-carousel-video>
+                  <source src="assets/movies/4.mp4" type="video/mp4" />
+                </video>
+                <video class="carousel-video" controls playsinline preload="metadata" data-carousel-video>
+                  <source src="assets/movies/5.mp4" type="video/mp4" />
+                </video>
+              </div>
+              <button class="carousel-control carousel-control--next" type="button" aria-label="Next video" data-carousel-next>
+                &rarr;
+              </button>
+            </div>
+            <div class="carousel-dots" data-carousel-dots>
+              <button class="carousel-dot is-active" type="button" aria-label="Go to video 1" data-carousel-dot="0"></button>
+              <button class="carousel-dot" type="button" aria-label="Go to video 2" data-carousel-dot="1"></button>
+              <button class="carousel-dot" type="button" aria-label="Go to video 3" data-carousel-dot="2"></button>
+              <button class="carousel-dot" type="button" aria-label="Go to video 4" data-carousel-dot="3"></button>
+              <button class="carousel-dot" type="button" aria-label="Go to video 5" data-carousel-dot="4"></button>
+            </div>
+          </div>
+
+          <div class="results-group">
+            <h2>Portrait Animation</h2>
+            <h3 class="results-subtitle">Self-reenactment</h3>
+            <figure class="result-figure">
+              <img src="assets/self-id.png" alt="Self-reenactment results for portrait animation." />
+            </figure>
+
+            <h3 class="results-subtitle">Cross-reenactment</h3>
+            <figure class="result-figure">
+              <img src="assets/cross-id.png" alt="Cross-reenactment results for portrait animation." />
+            </figure>
+          </div>
+        </div>
+      </section>
+      
+      <section class="section" id="bibtex">
+        <div class="container narrow">
+          <h2>BibTeX</h2>
+          <pre><code>@misc{performrecast,
+  title={PerformRecast: Expression and Head Pose Disentanglement for Portrait Video Editing},
+  author={Liang, Jiadong and Xiong, Bojun and Tian, Jie and Li, Hua and Long, Xiao and Zheng, Yong and Fu, Huan},
+  note={Project page citation draft. Update venue, arXiv identifier, and year if needed.}
+}</code></pre>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      (() => {
+        const carousel = document.querySelector('[data-carousel]');
+        if (!carousel) return;
+
+        const videos = Array.from(carousel.querySelectorAll('[data-carousel-video]'));
+        const prevButton = carousel.querySelector('[data-carousel-prev]');
+        const nextButton = carousel.querySelector('[data-carousel-next]');
+        const stage = carousel.querySelector('.carousel-stage');
+        const dots = Array.from(document.querySelectorAll('[data-carousel-dot]'));
+        let currentIndex = 0;
+
+        const updateStageRatio = () => {
+          const activeVideo = videos[currentIndex];
+          const width = activeVideo.videoWidth;
+          const height = activeVideo.videoHeight;
+          if (stage && width && height) {
+            stage.style.setProperty('--carousel-ratio', `${width} / ${height}`);
+          }
+        };
+
+        const render = () => {
+          videos.forEach((video, index) => {
+            const isActive = index === currentIndex;
+            video.classList.toggle('is-active', isActive);
+            if (!isActive) {
+              video.pause();
+            }
+          });
+
+          dots.forEach((dot, index) => {
+            dot.classList.toggle('is-active', index === currentIndex);
+          });
+
+          updateStageRatio();
+        };
+
+        prevButton?.addEventListener('click', () => {
+          currentIndex = (currentIndex - 1 + videos.length) % videos.length;
+          render();
+        });
+
+        nextButton?.addEventListener('click', () => {
+          currentIndex = (currentIndex + 1) % videos.length;
+          render();
+        });
+
+        dots.forEach((dot, index) => {
+          dot.addEventListener('click', () => {
+            currentIndex = index;
+            render();
+          });
+        });
+
+        videos.forEach((video) => {
+          video.addEventListener('loadedmetadata', updateStageRatio);
+        });
+
+        render();
+      })();
+    </script>
+  </body>
+</html>
