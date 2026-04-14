@@ -173,19 +173,15 @@
             <h3 class="results-subtitle">3D Animation</h3>
             <div class="results-long-videos">
               <div class="results-long-video">
-                <video controls playsinline preload="metadata" data-remote-video="shenmu_total">
-                  <source type="video/mp4" />
-                </video>
+                <div class="results-long-video__embed" data-youtube-video="shenmu_total" hidden></div>
                 <p class="results-long-video__placeholder" data-video-placeholder="shenmu_total">
-                  Remote video URL not configured yet for <code>shenmu_total.mp4</code>.
+                  YouTube video ID not configured yet for <code>shenmu_total</code>.
                 </p>
               </div>
               <div class="results-long-video">
-                <video controls playsinline preload="metadata" data-remote-video="tianxiang_total">
-                  <source type="video/mp4" />
-                </video>
+                <div class="results-long-video__embed" data-youtube-video="tianxiang_total" hidden></div>
                 <p class="results-long-video__placeholder" data-video-placeholder="tianxiang_total">
-                  Remote video URL not configured yet for <code>tianxiang_total.mp4</code>.
+                  YouTube video ID not configured yet for <code>tianxiang_total</code>.
                 </p>
               </div>
             </div>
@@ -321,26 +317,32 @@
 
     <script>
       (() => {
-        const EXTERNAL_VIDEOS = {
+        const YOUTUBE_VIDEO_IDS = {
           shenmu_total: '',
           tianxiang_total: '',
         };
 
-        const remoteVideos = Array.from(document.querySelectorAll('[data-remote-video]'));
-        remoteVideos.forEach((video) => {
-          const key = video.dataset.remoteVideo;
-          const source = video.querySelector('source');
+        const youtubeEmbeds = Array.from(document.querySelectorAll('[data-youtube-video]'));
+        youtubeEmbeds.forEach((embed) => {
+          const key = embed.dataset.youtubeVideo;
           const placeholder = document.querySelector(`[data-video-placeholder="${key}"]`);
-          const remoteUrl = EXTERNAL_VIDEOS[key];
+          const videoId = YOUTUBE_VIDEO_IDS[key];
 
-          if (!source) return;
-
-          if (remoteUrl) {
-            source.src = remoteUrl;
-            video.load();
+          if (videoId) {
+            embed.innerHTML = `
+              <iframe
+                src="https://www.youtube.com/embed/${videoId}?rel=0"
+                title="${key} YouTube video"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              ></iframe>
+            `;
+            embed.removeAttribute('hidden');
             placeholder?.setAttribute('hidden', '');
           } else {
-            video.setAttribute('hidden', '');
+            embed.setAttribute('hidden', '');
             placeholder?.removeAttribute('hidden');
           }
         });

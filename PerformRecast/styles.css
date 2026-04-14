@@ -331,11 +331,18 @@ p {
   overflow: hidden;
 }
 
-.results-long-video video {
+.results-long-video__embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
+.results-long-video__embed iframe {
   display: block;
   width: 100%;
-  height: auto;
-  background: #fff;
+  height: 100%;
+  border: 0;
 }
 
 .results-long-video__placeholder {
