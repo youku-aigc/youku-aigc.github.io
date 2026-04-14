@@ -171,6 +171,24 @@
             </div>
 
             <h3 class="results-subtitle">3D Animation</h3>
+            <div class="results-long-videos">
+              <div class="results-long-video">
+                <video controls playsinline preload="metadata" data-remote-video="shenmu_total">
+                  <source type="video/mp4" />
+                </video>
+                <p class="results-long-video__placeholder" data-video-placeholder="shenmu_total">
+                  Remote video URL not configured yet for <code>shenmu_total.mp4</code>.
+                </p>
+              </div>
+              <div class="results-long-video">
+                <video controls playsinline preload="metadata" data-remote-video="tianxiang_total">
+                  <source type="video/mp4" />
+                </video>
+                <p class="results-long-video__placeholder" data-video-placeholder="tianxiang_total">
+                  Remote video URL not configured yet for <code>tianxiang_total.mp4</code>.
+                </p>
+              </div>
+            </div>
             <div class="results-carousel results-carousel--wide" data-carousel>
               <button class="carousel-control carousel-control--prev" type="button" aria-label="Previous 3D Animation video" data-carousel-prev>
                 <span aria-hidden="true">&#10094;</span>
@@ -303,6 +321,30 @@
 
     <script>
       (() => {
+        const EXTERNAL_VIDEOS = {
+          shenmu_total: '',
+          tianxiang_total: '',
+        };
+
+        const remoteVideos = Array.from(document.querySelectorAll('[data-remote-video]'));
+        remoteVideos.forEach((video) => {
+          const key = video.dataset.remoteVideo;
+          const source = video.querySelector('source');
+          const placeholder = document.querySelector(`[data-video-placeholder="${key}"]`);
+          const remoteUrl = EXTERNAL_VIDEOS[key];
+
+          if (!source) return;
+
+          if (remoteUrl) {
+            source.src = remoteUrl;
+            video.load();
+            placeholder?.setAttribute('hidden', '');
+          } else {
+            video.setAttribute('hidden', '');
+            placeholder?.removeAttribute('hidden');
+          }
+        });
+
         const carousels = Array.from(document.querySelectorAll('[data-carousel]'));
         if (!carousels.length) return;
 

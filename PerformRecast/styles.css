@@ -316,6 +316,41 @@ p {
   margin-top: 0;
 }
 
+.results-long-videos {
+  display: grid;
+  gap: 20px;
+  width: min(100%, 860px);
+  margin: 24px auto 0;
+}
+
+.results-long-video {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.results-long-video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #fff;
+}
+
+.results-long-video__placeholder {
+  margin: 0;
+  padding: 22px 24px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.results-long-video__placeholder code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  color: var(--ink);
+}
+
 .result-figure {
   margin: 0;
 }
