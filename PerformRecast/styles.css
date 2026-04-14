@@ -324,6 +324,7 @@ p {
 }
 
 .results-long-video {
+  width: 100%;
   border: 1px solid var(--line);
   border-radius: 20px;
   background: #fff;
@@ -334,7 +335,7 @@ p {
 .results-long-video__embed {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 3840 / 3256;
   background: #000;
 }
 
